@@ -26,6 +26,10 @@ async function main() {
     todo.new_entry('Call Bob');
     todo.new_entry('Build wc');
 
+    let j = todo.to_json();
+    todo.data = {};
+    todo.from_json(j);
+
     // todo.sort();
     let render = TodoRender.get_instance();
     for (const entry of todo.data.entries) {

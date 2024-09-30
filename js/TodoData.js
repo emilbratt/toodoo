@@ -47,6 +47,22 @@ class _TodoData {
         }
         return entry[0];
     }
+
+    // download
+    to_json() {
+        return JSON.stringify(this.data);
+    }
+
+    // upload
+    from_json(json) {
+        const data = JSON.parse(json);
+        for (const entry of data.entries) {
+            let states = new TodoStates();
+            states.load_saved_states(entry.state.states);
+            entry.state = states;
+        }
+        this.data = data;
+    }
 }
 
 class TodoData  {

@@ -38,4 +38,14 @@ class TodoStates {
         this.#validate_state(state);
         return this.states[this.states.length - 1].value === state;
     }
+
+    load_saved_states(states) {
+        this.states = new Array();
+        for (const state of states) {
+            this.states.push({
+                value: state.value,
+                time: new Date(state.time),
+            });
+        }
+    }
 }
