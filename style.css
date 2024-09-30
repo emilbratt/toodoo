@@ -1,9 +1,9 @@
 body {
     margin: 0rem;
-    font-family: 'Source Sans Pro', monospace;
-    background-color: rgb(111, 141, 233);
     font-size: 1.0rem;
-    color: rgb(19, 29, 58);
+    /* font-family: 'Source Sans Pro', monospace; */
+    background-color: rgb(111, 141, 233);
+    color: rgb(45, 58, 96);
 }
 
 p {
@@ -17,16 +17,17 @@ button {
     text-decoration: none;
     box-sizing: border-box;
 }
-
 button:hover, button:active {
     opacity: 0.8;
     cursor: pointer;
 }
 
 textarea {
+    background-color: rgb(230, 246, 246);
+    border: solid rgb(207, 226, 226);
+    /* border: none; */
     height: 3.5rem;
     resize: vertical;
-    border: none;
     box-sizing: border-box;
     font-size: inherit;
     font-weight: inherit;
@@ -35,65 +36,74 @@ textarea {
     color: inherit;
 }
 
+#todo-entries>div:nth-child(even) {
+    background-color: rgb(174, 215, 212);
+}
+
+#todo-entries>div:nth-child(odd) {
+    background-color: rgb(154, 195, 202);
+}
+
+.button-add-todo {
+    background-color: rgb(240, 202, 247);
+}
+
+.button-cancel,
+.button-delete,
+.button-uncheck,
+.button-show-deleted {
+    background-color: rgb(244, 172, 136);
+}
+
+.button-save,
+.button-check,
+.button-restore,
+.button-show-completed {
+    background-color: rgb(195, 247, 196);
+}
+
 .main-container {
+    background-color: rgb(141, 171, 253);
     margin-left: auto;
     margin-right: auto;
     max-width: 50rem;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: rgb(141, 171, 253);
     /* flex-direction: row; */
     /* gap: 1rem; */
-}
 
+}
 .main-container > div {
-    margin: 0.3rem 0.3rem;
-    /* background-color: rgb(141, 171, 253); */
+    margin: 0.5rem 0.5rem;
 }
 
-.flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.flex-options {
+#todo-options > .todo-options {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1rem;
+    background-color: rgb(123, 149, 226);
+    /* gap: 1rem; */
 }
-
-.flex-options > div {
-    margin: 0.3rem 0.3rem;
+#todo-options > .todo-options > div {
+    margin: 0.5rem 0.5rem;
 }
-
-.flex-options > div:first-child {
+#todo-options > .todo-options > div:first-child {
     margin-right: auto;
 }
-
-.flex-options > div > button {
+#todo-options > .todo-options > div > button {
     height: 2.5rem;
     width: 5rem;
 }
 
-.todo-row {
+#todo-entries > .todo-entry-unchecked {
     display: flex;
     flex-direction: row;
     gap: 0.3rem;
     /* align-items: center; */
     /* justify-content: space-between; */
 }
-
-.todo-row:nth-child(even) {
-    background-color: rgb(174, 215, 212);
-}
-
-.todo-row:nth-child(odd) {
-    background-color: rgb(154, 195, 202);
-}
-
-.todo-row > div {
+#todo-entries > .todo-entry-unchecked > div {
     /* background-color: rgb(83, 152, 181); */
     margin: 0.5rem 0.5rem;
     /* padding: 0.4rem; */
@@ -103,76 +113,74 @@ textarea {
     /* justify-content: center; */
     /* height: 100%; */
 }
-
-.todo-row > div:first-child {
+#todo-entries > .todo-entry-unchecked > div:first-child {
     display: flex;
     align-items: center;
     margin-right: auto;
     /* width: 100%; */
 }
-
-/* .todo-row > div > p {
-    background-color: rgb(162, 207, 235);
-} */
-
-.todo-row > div > button {
+#todo-entries > .todo-entry-unchecked > div > button {
     height: 2.5rem;
     width: 4rem;
 }
 
-.button-add-todo {
-    background-color: rgb(240, 202, 247);
+#todo-entries > .todo-entry-checked {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+}
+#todo-entries > .todo-entry-checked > div {
+    margin: 0.5rem 0.5rem;
+}
+#todo-entries > .todo-entry-checked > div:first-child {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+#todo-entries > .todo-entry-checked > div > button {
+    height: 2.5rem;
+    width: 4rem;
 }
 
-.button-cancel,
-.button-delete,
-.button-show-deleted {
-    background-color: rgb(244, 172, 136);
+#todo-entries > .todo-entry-deleted {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+}
+#todo-entries > .todo-entry-deleted > div {
+    margin: 0.5rem 0.5rem;
+}
+#todo-entries > .todo-entry-deleted > div:first-child {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+#todo-entries > .todo-entry-deleted > div > button {
+    height: 2.5rem;
+    width: 4rem;
 }
 
-.button-save,
-.button-check,
-.button-show-completed {
-    background-color: rgb(195, 247, 196);
-}
-
-.todo-row-edit {
+#todo-entries > .todo-entry-edit {
     display: flex;
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
-    background-color: rgb(204, 245, 242);
-    animation-name: color_switcher;
-    animation-duration: 3s;
-    /* animation-iteration-count: infinite; */
-    /* gap: 0.5rem; */
 }
-
-@keyframes color_switcher {
-    0%   {background-color: rgb(204, 245, 242);}
-    40%  {background-color: rgb(204, 245, 242);}
-    50%  {background-color: rgb(214, 245, 222);}
-    60%  {background-color: rgb(204, 245, 242);}
-    100% {background-color: rgb(204, 245, 242);}
-}
-
-.todo-row-edit > div {
+#todo-entries > .todo-entry-edit > div {
     margin: 0.5rem;
 }
-
-.todo-row-edit > div:first-child {
+#todo-entries > .todo-entry-edit > div:first-child {
     width: 100%;
     display: flex;
     justify-content: center;
 }
-
-.todo-row-edit > div > textarea {
-    background-color: rgb(161, 198, 196);
-    width: 75%;
+#todo-entries > .todo-entry-edit > div > textarea {
+    width: 80%;
+    max-width: 30rem;
     padding: 0.2rem;
+    text-align: center;
 }
-
-.todo-row-edit > div > button {
+#todo-entries > .todo-entry-edit > div > button {
     height: 2.5rem;
     width: 4rem;
 }

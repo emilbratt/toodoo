@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <script src="js/main.js"></script>
+    <script src="js/TodoData.js"></script>
+    <script src="js/TodoRender.js"></script>
+    <script src="js/TodoStates.js"></script>
     <title>Todo</title>
 </head>
 <body>
     <div class="main-container">
 
         <div id="todo-options">
-            <div class="flex-options">
+            <div class="todo-options">
                 <div>
                     <button class="button-add-todo">New</button>
                 </div>
@@ -27,71 +30,7 @@
         </div>
 
         <!-- TODO ROWS -->
-        <div id="todo-rows">
-
-            <!-- TODO ENTRY -->
-            <div class="todo-row">
-                <div>
-                    <p>Clean bedroom</p>
-                </div>
-                <div>
-                    <button class="button-check">✓</button>
-                </div>
-                <div>
-                    <button class="button-delete">X</button>
-                </div>
-            </div>
-
-            <div class="todo-row">
-                <div>
-                    <p>Clean kitchen</p>
-                </div>
-                <div>
-                    <button class="button-check">✓</button>
-                </div>
-                <div>
-                    <button class="button-delete">X</button>
-                </div>
-            </div>
-
-            <div class="todo-row">
-                <div>
-                    <p>Clean basement</p>
-                </div>
-                <div>
-                    <button class="button-check">✓</button>
-                </div>
-                <div>
-                    <button class="button-delete">X</button>
-                </div>
-            </div>
-
-            <!-- EDIT OR ADD 💾 TODO -->
-            <div class="todo-row-edit">
-                <div>
-                    <textarea placeholder="Describe task here..">Buy milk</textarea>
-                </div>
-                <div>
-                    <button class="button-save">Save</button>
-                </div>
-                <div>
-                    <button class="button-cancel">Cancel</button>
-                </div>
-            </div>
-
-            <!-- TODO ENTRY WITH LONG TEXT -->
-            <div class="todo-row">
-                <div>
-                    <p class="todo-text">Lorem ipsum odor amet, consectetuer adipiscing elit. Justo iaculis metus primis; vulputate sem est ultricies praesent dolor. Nostra maximus nam ante felis erat ornare congue! Morbi adipiscing cursus nostra tempor eleifend dui imperdiet. Orci eu natoque integer orci potenti. Ex justo praesent arcu pretium adipiscing dictum vivamus lacus dapibus. Himenaeos non gravida netus dignissim magnis dictumst diam. Non sodales euismod est sapien tincidunt vitae eget ad.</p>
-                </div>
-                <div>
-                    <button class="button-check">✓</button>
-                </div>
-                <div>
-                    <button class="button-delete">X</button>
-                </div>
-            </div>
-        </div>
+        <div id="todo-entries"></div>
 
     </div>
 </body>
