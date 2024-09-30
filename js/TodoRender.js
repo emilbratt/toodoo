@@ -57,6 +57,13 @@ class _TodoRender {
         return this.#div(btn);
     }
 
+    #todo_button_save() {
+        let btn = document.createElement('button');
+        btn.textContent = 'Save';
+        btn.classList.add('button-save');
+        return this.#div(btn);
+    }
+
     #todo_button_uncheck() {
         let btn = document.createElement('button');
         btn.textContent = 'Uncheck';
@@ -66,8 +73,15 @@ class _TodoRender {
 
     #todo_button_delete() {
         let btn = document.createElement('button');
-        btn.textContent = 'X';
+        btn.textContent = 'Delete';
         btn.classList.add('button-delete');
+        return this.#div(btn);
+    }
+
+    #todo_button_delete_perma() {
+        let btn = document.createElement('button');
+        btn.textContent = 'Delete permanently';
+        btn.classList.add('button-delete-perma');
         return this.#div(btn);
     }
 
@@ -94,6 +108,7 @@ class _TodoRender {
             row.classList.add('todo-entry-checked');
             row.appendChild(this.#text_checked(entry.text));
             row.appendChild(this.#todo_button_uncheck());
+            row.appendChild(this.#todo_button_delete());
         }
         if (entry.state.is(TODO_STATES.DELETED)) {
             if (!this.show_deleted) {
@@ -102,11 +117,12 @@ class _TodoRender {
             row.classList.add('todo-entry-deleted');
             row.appendChild(this.#text_deleted(entry.text));
             row.appendChild(this.#todo_button_restore());
+            row.appendChild(this.#todo_button_delete_perma());
         }
         if (entry.state.is(TODO_STATES.EDITING)) {
             row.classList.add('todo-entry-edit');
             row.appendChild(this.#todo_textarea(entry.text));
-            row.appendChild(this.#todo_button_check());
+            row.appendChild(this.#todo_button_save());
             row.appendChild(this.#todo_button_delete());
         }
 
