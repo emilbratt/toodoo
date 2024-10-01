@@ -5,8 +5,14 @@ body {
 }
 
 p {
-    margin: auto;
+    word-break: break-all;
+    margin-top: auto;
+    margin-bottom: auto;
     box-sizing: border-box;
+    padding: 0.5rem;
+    /* white-space: normal; */
+    /* margin-right: auto; */
+    /* min-width: 3rem; */
 }
 
 button {
@@ -47,7 +53,8 @@ textarea {
 
 .button-new-todo,
 .button-save,
-.button-show-completed {
+.button-edit,
+.button-show-checked {
     background-color: rgb(183, 255, 254);
 }
 
@@ -60,8 +67,7 @@ textarea {
     background-color: rgb(244, 172, 136);
 }
 
-.button-check,
-.button-restore {
+.button-check {
     background-color: rgb(195, 247, 196);
 }
 
@@ -75,11 +81,15 @@ textarea {
     display: flex;
     flex-direction: column;
     /* flex-direction: row; */
-    /* gap: 1rem; */
     /* font-family: 'Source Sans Pro', monospace; */
 }
 .main-container > div {
-    margin: 0.5rem 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+.main-container > div:first-child {
+    margin-top: 0.5rem;
 }
 
 #todo-options > .todo-options {
@@ -100,45 +110,21 @@ textarea {
     width: 5rem;
 }
 
-#todo-entries > .todo-entry-unchecked {
-    display: flex;
-    flex-direction: row;
-    gap: 0.3rem;
-    /* align-items: center; */
-    /* justify-content: space-between; */
-}
-#todo-entries > .todo-entry-unchecked > div {
-    /* background-color: rgb(83, 152, 181); */
-    margin: 0.5rem 0.5rem;
-    /* padding: 0.4rem; */
-    /* margin: 0.3rem 0.3rem; */
-    /* align-items: flex-start; */
-    /* min-height: 3rem; */
-    /* justify-content: center; */
-    /* height: 100%; */
-}
-#todo-entries > .todo-entry-unchecked > div:first-child {
-    display: flex;
-    align-items: center;
-    margin-right: auto;
-    /* width: 100%; */
-}
-
+#todo-entries > .todo-entry-unchecked,
 #todo-entries > .todo-entry-checked {
+    padding: 0.5rem;
     display: flex;
     flex-direction: row;
-    gap: 0.3rem;
+    gap: 0.5rem;
+}
+#todo-entries > .todo-entry-unchecked > div:first-child,
+#todo-entries > .todo-entry-checked > div:first-child {
+    /* background-color: rgb(183, 235, 255); */
+    width: 100%;
 }
 #todo-entries > .todo-entry-checked > div {
     text-decoration: line-through;
-    margin: 0.5rem 0.5rem;
 }
-#todo-entries > .todo-entry-checked > div:first-child {
-    display: flex;
-    align-items: center;
-    margin-right: auto;
-}
-
 #todo-entries > .todo-entry-edit {
     display: flex;
     flex-direction: row;

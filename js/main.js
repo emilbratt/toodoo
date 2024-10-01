@@ -11,27 +11,32 @@ async function main() {
 
     let todo = TodoData.get_instance();
 
-    let build_bedrom = todo.new_entry('Build bedroom');
-    build_bedrom.state.set(TODO_STATES.EDITING);
+    let breakfast = todo.new_entry();
+    breakfast.text = 'Eat breakfast';
+    breakfast.state.set(TODO_STATES.CHECKED);
+    breakfast.state.set(TODO_STATES.EDITING);
 
-    let build_kitchen = todo.new_entry('Build kitchen');
-    build_kitchen.state.set(TODO_STATES.CHECKED);
+    let dinner = todo.new_entry();
+    dinner.text = 'Make dinner';
+    dinner.state.set(TODO_STATES.CHECKED);
 
-    let build_house = todo.new_entry('Build house');
-    build_house.state.set(TODO_STATES.CHECKED);
+    let bathroom = todo.new_entry();
+    bathroom.text = 'Clean bathroom';
+    bathroom.state.set(TODO_STATES.UNCHECKED);
 
-    todo.new_entry('Call Bob');
-    todo.new_entry('Build wc');
+    let bob = todo.new_entry();
+    bob.text = 'Call Bob';
+    bob.state.set(TODO_STATES.CHECKED);
 
     let j = todo.to_json();
     todo.data = {};
     todo.from_json(j);
 
-    // todo.sort();
+    // todo.sort(true);
     let render = TodoRender.get_instance();
-    render.show_completed = true;
+    render.show_checked = true;
 
-    for (const entry of todo.data.entries) {
-        render.todo_rows(entry);
+    for (const entry of todo.entries()) {
+        render.show_entry(entry);
     }
 }
