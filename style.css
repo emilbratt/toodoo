@@ -1,7 +1,5 @@
 body {
     margin: 0rem;
-    font-size: 1.0rem;
-    /* font-family: 'Source Sans Pro', monospace; */
     background-color: rgb(111, 141, 233);
     color: rgb(45, 58, 96);
 }
@@ -47,31 +45,29 @@ textarea {
     background-color: rgb(154, 195, 202);
 }
 
-.button-add-todo {
-    background-color: rgb(240, 202, 247);
-}
-
-.button-delete-perma {
-    width: 5rem;
+.button-new-todo,
+.button-save,
+.button-show-completed {
+    background-color: rgb(183, 255, 254);
 }
 
 .button-cancel,
-.button-delete,
-.button-delete-perma,
-.button-uncheck,
-.button-show-deleted {
+.button-uncheck {
+    background-color: rgb(255, 240, 203);
+}
+
+.button-delete {
     background-color: rgb(244, 172, 136);
 }
 
-.button-save,
 .button-check,
-.button-restore,
-.button-show-completed {
+.button-restore {
     background-color: rgb(195, 247, 196);
 }
 
 .main-container {
     background-color: rgb(141, 171, 253);
+    font-size: 1.0rem;
     margin-left: auto;
     margin-right: auto;
     max-width: 50rem;
@@ -80,7 +76,7 @@ textarea {
     flex-direction: column;
     /* flex-direction: row; */
     /* gap: 1rem; */
-
+    /* font-family: 'Source Sans Pro', monospace; */
 }
 .main-container > div {
     margin: 0.5rem 0.5rem;
@@ -134,23 +130,10 @@ textarea {
     gap: 0.3rem;
 }
 #todo-entries > .todo-entry-checked > div {
+    text-decoration: line-through;
     margin: 0.5rem 0.5rem;
 }
 #todo-entries > .todo-entry-checked > div:first-child {
-    display: flex;
-    align-items: center;
-    margin-right: auto;
-}
-
-#todo-entries > .todo-entry-deleted {
-    display: flex;
-    flex-direction: row;
-    gap: 0.3rem;
-}
-#todo-entries > .todo-entry-deleted > div {
-    margin: 0.5rem 0.5rem;
-}
-#todo-entries > .todo-entry-deleted > div:first-child {
     display: flex;
     align-items: center;
     margin-right: auto;
@@ -163,7 +146,7 @@ textarea {
     flex-wrap: wrap;
 }
 #todo-entries > .todo-entry-edit > div {
-    margin: 0.5rem;
+    margin: 0.5rem 1rem;
 }
 #todo-entries > .todo-entry-edit > div:first-child {
     width: 100%;

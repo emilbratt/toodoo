@@ -2,26 +2,12 @@ class _TodoData {
     data = {};
 
     constructor() {
-        this.data.show_completed = false;
-        this.data.show_deleted = false;
         this.data.new_id = 0;
         this.data.entries = new Array();/*TodoEntry*/
     }
 
     sort() {
         this.data.entries.sort((a, b) => b.id > a.id);
-    }
-
-    toggle_show_completed() {
-        const b = !this.data.show_completed;
-        this.data.show_completed = b;
-        TodoRender.get_instance().show_completed = b;
-    }
-
-    toggle_show_deleted() {
-        const b = !this.data.show_deleted;
-        this.data.show_deleted = b;
-        TodoRender.get_instance().show_deleted = b;
     }
 
     // entry: TodoEntry;

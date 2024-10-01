@@ -2,7 +2,7 @@ const TODO_STATES = {
     UNCHECKED: 0,
     CHECKED: 1,
     EDITING: 2,
-    DELETED: 3,
+    // DELETED: 3,
 };
 Object.seal(TODO_STATES);
 
