@@ -30,7 +30,7 @@ button:hover, button:active {
 }
 
 textarea {
-    background-color: rgb(230, 246, 246);
+    background-color: rgb(212, 246, 246);
     border: solid rgb(207, 226, 226);
     /* border: none; */
     height: 3.5rem;
@@ -58,6 +58,7 @@ textarea {
     background-color: rgb(183, 255, 254);
 }
 
+
 .button-cancel,
 .button-uncheck {
     background-color: rgb(255, 240, 203);
@@ -71,7 +72,7 @@ textarea {
     background-color: rgb(195, 247, 196);
 }
 
-.main-container {
+#main-container {
     background-color: rgb(141, 171, 253);
     font-size: 1.0rem;
     margin-left: auto;
@@ -83,31 +84,31 @@ textarea {
     /* flex-direction: row; */
     /* font-family: 'Source Sans Pro', monospace; */
 }
-.main-container > div {
+#main-container > div {
     margin-bottom: 0.5rem;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
 }
-.main-container > div:first-child {
+#main-container > div:first-child {
     margin-top: 0.5rem;
 }
 
-#todo-options > .todo-options {
+#app-options > .todo-options {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     background-color: rgb(123, 149, 226);
     /* gap: 1rem; */
 }
-#todo-options > .todo-options > div {
+#app-options > .todo-options > div {
     margin: 0.5rem 0.5rem;
 }
-#todo-options > .todo-options > div:first-child {
+#app-options > .todo-options > div:first-child {
     margin-right: auto;
 }
-#todo-options > .todo-options > div > button {
+#app-options > .todo-options > div > button {
     height: 2.5rem;
-    width: 5rem;
+    width: 8rem;
 }
 
 #todo-entries > .todo-entry-unchecked,

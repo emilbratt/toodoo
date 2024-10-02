@@ -1,48 +1,38 @@
-function e_todo_new(e) {
-    console.log('e_todo_new:', 'mouse: ', e);
+"use strict"
 
+function e_first_page_load() {
+    const render = RenderAppOptions.get_instance();
+    render.init();
+}
+
+function e_todo_new(e) {
     const todo = TodoData.get_instance();
     const entry = todo.new_entry('write');
 
-    const render = TodoRender.get_instance();
-    render.show_entry(entry);
+    RenderTodoEntries.get_instance().show_entry(entry);
 }
 
 function e_todo_entry_edit(entry, e) {
-    console.log('e_todo_entry_edit:', entry, e);
     if (e.button !== 0) return;
-    if (entry.state.is(TODO_STATES.EDITING)) return;
 
     entry.state.set(TODO_STATES.EDITING);
 
-    const render = TodoRender.get_instance();
-    render.show_entry(entry);
+    RenderTodoEntries.get_instance().show_entry(entry);
 }
 
 function e_todo_entry_check(entry, e) {
-    console.log('e_todo_entry_check:', entry, 'mouse: ', e);
     if (e.button !== 0) return;
-    if (entry.state.is(TODO_STATES.CHECKED)) return;
 
-    entry.state.set(TODO_STATES.CHECKED);
+    if (!entry.state.is(TODO_STATES.CHECKED)) {
+        entry.state.set(TODO_STATES.CHECKED);
+    } else {
+        entry.state.set(TODO_STATES.UNCHECKED);
+    }
 
-    const render = TodoRender.get_instance();
-    render.show_entry(entry);
-}
-
-function e_todo_entry_uncheck(entry, e) {
-    console.log('e_todo_entry_uncheck:', entry, 'mouse: ', e);
-    if (e.button !== 0) return;
-    if (entry.state.is(TODO_STATES.UNCHECKED)) return;
-
-    entry.state.set(TODO_STATES.UNCHECKED);
-
-    const render = TodoRender.get_instance();
-    render.show_entry(entry);
+    RenderTodoEntries.get_instance().show_entry(entry);
 }
 
 function e_todo_entry_save(entry, e) {
-    console.log('e_todo_entry_save:', entry, 'mouse: ', e);
     if (e.button !== 0) return;
 
     entry.state.set(TODO_STATES.UNCHECKED);
@@ -53,50 +43,80 @@ function e_todo_entry_save(entry, e) {
         throw new Error(`could not find element by id '${edit_id}'`);
     }
 
-    const render = TodoRender.get_instance();
+    const render = RenderTodoEntries.get_instance();
 
     entry.text = edit_field.value;
 
     if (entry.text.length === 0) {
-        const todo = TodoData.get_instance();
         render.remove_entry(entry);
-        todo.delete_entry(entry);
+        TodoData.get_instance().delete_entry(entry);
     } else {
         render.show_entry(entry);
     }
 }
 
 function e_todo_entry_cancel(entry, e) {
-    console.log('cancel:', entry, 'mouse: ', e);
     if (e.button !== 0) return;
 
+     // remove last added state making the previous state now the current one
     entry.state.pop();
 
-    const render = TodoRender.get_instance();
+    const render = RenderTodoEntries.get_instance();
 
     if (entry.text.length === 0) {
-        const todo = TodoData.get_instance();
         render.remove_entry(entry);
-        todo.delete_entry(entry);
+        TodoData.get_instance().delete_entry(entry);
+    } else {
+        render.show_entry(entry);
     }
-
-    render.show_entry(entry);
 }
 
 function e_todo_entry_delete(entry, e) {
     console.log('e_todo_entry_save:', entry, 'mouse: ', e);
 
-    const render = TodoRender.get_instance();
-    render.remove_entry(entry);
-
-    const todo = TodoData.get_instance();
-    todo.delete_entry(entry);
+    RenderTodoEntries.get_instance().remove_entry(entry);
+    TodoData.get_instance().delete_entry(entry);
 }
 
-function e_show_checked(e) {
+function e_opt_show_checked(e) {
     console.log('e_show_checked:', 'mouse: ', e);
 
-    const render = TodoRender.get_instance();
-    render.show_checked = !render.show_checked;
-    render.all_entries();
+    const render_todo = RenderTodoEntries.get_instance();
+    render_todo.show_checked = !render_todo.show_checked;
+    render_todo.all_entries();
+
+    RenderAppOptions.get_instance().button_show_checked(render_todo.show_checked);
+}
+
+function e_add_dummy_data() {
+    let todo = TodoData.get_instance();
+
+    let breakfast = todo.new_entry();
+    breakfast.text = 'Eat breakfast';
+    breakfast.state.set(TODO_STATES.CHECKED);
+    breakfast.state.set(TODO_STATES.EDITING);
+
+    let dinner = todo.new_entry();
+    dinner.text = 'Make dinner';
+    dinner.state.set(TODO_STATES.CHECKED);
+
+    let bathroom = todo.new_entry();
+    bathroom.text = 'Clean bathroom';
+    bathroom.state.set(TODO_STATES.UNCHECKED);
+
+    let bob = todo.new_entry();
+    bob.text = 'Call Bob';
+    bob.state.set(TODO_STATES.CHECKED);
+
+    let j = todo.to_json();
+    todo.data = {};
+    todo.from_json(j);
+
+    // todo.sort(true);
+    let render = RenderTodoEntries.get_instance();
+    // render.show_checked = true;
+
+    for (const entry of todo.entries()) {
+        render.show_entry(entry);
+    }
 }

@@ -8,28 +8,23 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <script src="js/events.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/RenderAppOptions.js"></script>
+    <script src="js/RenderTodoEntries.js"></script>
     <script src="js/TodoData.js"></script>
-    <script src="js/TodoRender.js"></script>
     <script src="js/TodoStates.js"></script>
     <title>Toodoo</title>
 </head>
 <body>
-    <div class="main-container">
 
-        <div id="todo-options">
-            <div class="todo-options">
-                <div>
-                    <button id="button-new-todo" class="button-new-todo">New</button>
-                </div>
-                <div>
-                    <button id="button-show-checked" class="button-show-checked">Completed</button>
-                </div>
-            </div>
-        </div>
+    <div id="main-container" class="main-container">
+
+        <!-- APP OPTIONS -->
+        <div id="app-options"></div>
 
         <!-- TODO ROWS -->
         <div id="todo-entries"></div>
 
     </div>
+
 </body>
 </html>
