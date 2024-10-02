@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", e_first_page_load);
 // document.addEventListener("DOMContentLoaded", e_add_dummy_data);
+document.addEventListener("DOMContentLoaded", e_first_page_load);
 
 // // simulate slow function with sleep
 // function sleep() {

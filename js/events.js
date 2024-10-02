@@ -1,15 +1,54 @@
 "use strict"
 
 function e_first_page_load() {
-    const render = RenderAppOptions.get_instance();
-    render.init();
+    const todo = TodoData.get_instance();
+
+    if (todo.is_empty()) {
+        // show splash!
+        RenderAppSplash.get_instance().init();
+        return;
+    }
+
+    // init page
+    RenderAppSplash.get_instance().remove();
+    RenderAppOptions.get_instance().init();
+    RenderTodoEntries.get_instance().all_entries();
+}
+
+function e_splash_start(e) {
+    if (e.button !== 0) return;
+
+    RenderAppSplash.get_instance().remove();
+    RenderAppOptions.get_instance().init();
+    RenderTodoEntries.get_instance().all_entries();
+}
+
+function e_toggle_show_app_options(e) {
+    if (e.button !== 0) return;
+
+    const options = RenderAppOptions.get_instance()
+    options.show_app_options = !options.show_app_options;
+    if (options.show_app_options) {
+        options.show_page_options();
+    } else {
+        options.remove_page_options();
+    }
+    options.button_hmburger_highlight(options.show_app_options);
 }
 
 function e_todo_new(e) {
+    if (e.button !== 0) return;
+
     const todo = TodoData.get_instance();
-    const entry = todo.new_entry('write');
+    const entry = todo.new_entry();
 
     RenderTodoEntries.get_instance().show_entry(entry);
+}
+
+function e_download(e) {
+    if (e.button !== 0) return;
+
+    console.log('download');
 }
 
 function e_todo_entry_edit(entry, e) {
@@ -30,6 +69,7 @@ function e_todo_entry_check(entry, e) {
     }
 
     RenderTodoEntries.get_instance().show_entry(entry);
+    TodoData.get_instance().update_entry(entry);
 }
 
 function e_todo_entry_save(entry, e) {
@@ -52,6 +92,7 @@ function e_todo_entry_save(entry, e) {
         TodoData.get_instance().delete_entry(entry);
     } else {
         render.show_entry(entry);
+        TodoData.get_instance().save_entry(entry);
     }
 }
 
@@ -59,7 +100,6 @@ function e_todo_entry_cancel(entry, e) {
     if (e.button !== 0) return;
 
      // remove last added state making the previous state now the current one
-    entry.state.pop();
 
     const render = RenderTodoEntries.get_instance();
 
@@ -67,25 +107,26 @@ function e_todo_entry_cancel(entry, e) {
         render.remove_entry(entry);
         TodoData.get_instance().delete_entry(entry);
     } else {
+        entry.state.pop();
         render.show_entry(entry);
     }
 }
 
 function e_todo_entry_delete(entry, e) {
-    console.log('e_todo_entry_save:', entry, 'mouse: ', e);
+    if (e.button !== 0) return;
 
-    RenderTodoEntries.get_instance().remove_entry(entry);
     TodoData.get_instance().delete_entry(entry);
+    RenderTodoEntries.get_instance().remove_entry(entry);
 }
 
-function e_opt_show_checked(e) {
-    console.log('e_show_checked:', 'mouse: ', e);
+function e_toggle_show_checked(e) {
+    if (e.button !== 0) return;
 
     const render_todo = RenderTodoEntries.get_instance();
     render_todo.show_checked = !render_todo.show_checked;
     render_todo.all_entries();
 
-    RenderAppOptions.get_instance().button_show_checked(render_todo.show_checked);
+    RenderAppOptions.get_instance().button_show_checked_highlight(render_todo.show_checked);
 }
 
 function e_add_dummy_data() {
@@ -113,10 +154,8 @@ function e_add_dummy_data() {
     todo.from_json(j);
 
     // todo.sort(true);
+
     let render = RenderTodoEntries.get_instance();
     // render.show_checked = true;
-
-    for (const entry of todo.entries()) {
-        render.show_entry(entry);
-    }
+    render.all_entries();
 }

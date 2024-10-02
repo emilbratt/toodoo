@@ -2,8 +2,18 @@ class _TodoData {
     #data = {};
 
     constructor() {
-        this.#data.new_id = 0;
-        this.#data.entries = new Array();/*TodoEntry*/
+        const json = localStorage.getItem('data');
+        if (json === null) {
+            this.#data = {};
+            this.#data.new_id = 0;
+            this.#data.entries = new Array();
+        } else {
+            this.load_from_json(json);
+        }
+    }
+
+    #update_local_store() {
+        localStorage.setItem('data', JSON.stringify(this.#data));
     }
 
     sort(reverse) {
@@ -17,15 +27,11 @@ class _TodoData {
 
     // entry: TodoEntry;
     new_entry() {
-        const entry = {
+        return {
             id:    this.#data.new_id,
             state: new TodoStates(),
             text:  '',
         };
-        this.#data.entries.push(entry);
-        this.#data.new_id += 1;
-
-        return entry;
     }
 
     get_entry(id) {
@@ -39,22 +45,37 @@ class _TodoData {
         return entry[0];
     }
 
-    save_entry(entry) {
-        let id = entry.id;
-        const e = this.#data.entries.filter((kv) => kv.id === id);
-        if (e.length === 0) {
-            this.#data.entries.push(entry);
-        } else {
-            e = entry;
+    update_entry(entry) {
+        for (let e of this.#data.entries) {
+            if (e.i === entry.id) {
+                e.state = entry.state;
+                e.text = entry.text;
+            }
         }
+
+        this.#update_local_store();
+    }
+
+    save_entry(entry) {
+        this.#data.entries.push(entry);
+        this.#data.new_id += 1;
+        this.#update_local_store();
     }
 
     delete_entry(entry) {
-        // this.#data.entries = this.#data.entries.filter((item) => item.id !== entry.id);
         this.#data.entries.splice(
             this.#data.entries.findIndex((kv) => kv.id === entry.id),
             1,
         );
+
+        this.#update_local_store();
+        if (this.is_empty()) {
+            localStorage.removeItem('data');
+        }
+    }
+
+    is_empty() {
+        return this.#data.entries.length === 0;
     }
 
     // download
@@ -63,10 +84,10 @@ class _TodoData {
     }
 
     // upload
-    from_json(json) {
+    load_from_json(json) {
         const data = JSON.parse(json);
         for (const entry of data.entries) {
-            let states = new TodoStates();
+            const states = new TodoStates();
             states.load_saved_states(entry.state.states);
             entry.state = states;
         }

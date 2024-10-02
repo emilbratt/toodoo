@@ -12,7 +12,7 @@ class TodoStates {
     }
 
     #add(state) {
-        this.states.push({    
+        this.states.push({
             value: state,
             time: new Date(),
         });

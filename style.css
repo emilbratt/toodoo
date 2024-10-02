@@ -43,21 +43,19 @@ textarea {
     color: inherit;
 }
 
-#todo-entries>div:nth-child(even) {
-    background-color: rgb(174, 215, 212);
-}
-
-#todo-entries>div:nth-child(odd) {
-    background-color: rgb(154, 195, 202);
-}
 
 .button-new-todo,
 .button-save,
 .button-edit,
+.button-hamburger,
 .button-show-checked {
     background-color: rgb(183, 255, 254);
 }
 
+.button-hamburger-off,
+.button-show-checked-off {
+    opacity: 0.8;
+}
 
 .button-cancel,
 .button-uncheck {
@@ -93,22 +91,24 @@ textarea {
     margin-top: 0.5rem;
 }
 
+#app-options > .page-options,
 #app-options > .todo-options {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     background-color: rgb(123, 149, 226);
-    /* gap: 1rem; */
 }
+#app-options > .page-options > div,
 #app-options > .todo-options > div {
     margin: 0.5rem 0.5rem;
 }
+#app-options > .page-options > div:first-child,
 #app-options > .todo-options > div:first-child {
     margin-right: auto;
 }
 #app-options > .todo-options > div > button {
     height: 2.5rem;
-    width: 8rem;
+    /* width: 8rem; */
 }
 
 #todo-entries > .todo-entry-unchecked,
@@ -118,13 +118,19 @@ textarea {
     flex-direction: row;
     gap: 0.5rem;
 }
+#todo-entries>div:nth-child(even) {
+    background-color: rgb(174, 215, 212);
+}
+#todo-entries>div:nth-child(odd) {
+    background-color: rgb(154, 195, 202);
+}
 #todo-entries > .todo-entry-unchecked > div:first-child,
 #todo-entries > .todo-entry-checked > div:first-child {
-    /* background-color: rgb(183, 235, 255); */
     width: 100%;
 }
 #todo-entries > .todo-entry-checked > div {
     text-decoration: line-through;
+    opacity: 0.5;
 }
 #todo-entries > .todo-entry-edit {
     display: flex;
