@@ -1,0 +1,82 @@
+"use strict"
+
+const DEBUG_ENABLE = {
+    TODO_DATA: false,
+    ADD_DUMMY_DATA: false,
+};
+
+function debug_todo_data(caller) {
+    if (!DEBUG_ENABLE.TODO_DATA) return;
+
+    console.log(`\nDEBUG '${caller}()'`)
+
+    const todo = TodoData.get_instance();
+
+    const json = localStorage.getItem('data');
+    if (json === null) {
+        console.log('LOCAL STORAGE IS NULL');
+        console.assert(todo.entries().length === 0);
+        return;
+    } else if (caller === 'e_first_page_load') {
+        console.log(`LOCAL STORAGE\n${json}`);
+    }
+
+    const local_storage = JSON.parse(json);
+    console.assert(local_storage.entries.length === todo.entries().length);
+
+    for (let i = 0; i < local_storage.entries.length; i++) {
+        let local_entry = local_storage.entries[i];
+        let s_local_entry = JSON.stringify(local_entry);
+
+        let mem_entry = todo.entries()[i];
+        let s_mem_entry = JSON.stringify(mem_entry);
+
+        // console.log('local', local_entry);
+        // console.log('mem', mem_entry);
+
+        console.assert(
+            (s_local_entry === s_mem_entry),
+            '\ns_local_entry', s_local_entry,
+            '\ns_mem_entry', s_mem_entry,
+        );
+    }
+}
+
+function debug_add_dummy_data() {
+    if (!DEBUG_ENABLE.ADD_DUMMY_DATA) return;
+
+    console.log('\nDEBUG:', 'debug_add_dummy_data')
+
+    let todo = TodoData.get_instance();
+    todo.reset();
+
+    let breakfast = todo.new_entry();
+    breakfast.text = 'Eat breakfast';
+    breakfast.state.set(TODO_STATES.CHECKED);
+    todo.save_entry(breakfast);
+
+    let dinner = todo.new_entry();
+    dinner.text = 'Make dinner';
+    dinner.state.set(TODO_STATES.CHECKED);
+    todo.save_entry(dinner);
+
+    let bathroom = todo.new_entry();
+    bathroom.text = 'Clean bathroom';
+    bathroom.state.set(TODO_STATES.UNCHECKED);
+    todo.save_entry(bathroom);
+
+    let bob = todo.new_entry();
+    bob.text = 'Call Bob';
+    bob.state.set(TODO_STATES.UNCHECKED);
+    todo.save_entry(bob);
+
+    let j = todo.save_to_json();
+    todo.data = {};
+    todo.load_from_json(j);
+
+    // todo.sort(true);
+
+    let render = RenderTodoEntries.get_instance();
+    // render.show_checked = true;
+    render.all_entries();
+}

@@ -62,6 +62,9 @@ class _RenderTodoEntries {
     }
 
     #get_row(entry) {
+        // TODO: implement 'Element: replaceChildren() method' instead..
+        // DOC: https://developer.mozilla.org/en-US/docs/Web/API/Element/replaceChildren
+
         let row = document.getElementById(entry.id);
         if (row) {
             // reset current todo row
@@ -78,6 +81,7 @@ class _RenderTodoEntries {
             }
         }
         row.className = entry.state.class_name();
+
         return row;
     }
 
@@ -118,11 +122,12 @@ class _RenderTodoEntries {
                 break;
 
             case TODO_STATES.EDITING:
-                text_field = this.#todo_textarea(entry.text, 'edit'.concat(entry.id));
+                const text_filed_id = 'input'.concat(entry.id);
+                text_field = this.#todo_textarea(entry.text, text_filed_id);
                 row.appendChild(text_field);
 
                 btn = this.#todo_button_save();
-                btn.addEventListener("mousedown", (e) => e_todo_entry_save(entry, e));
+                btn.addEventListener("mousedown", (e) => e_todo_entry_save(entry, text_filed_id, e));
                 row.appendChild(btn);
 
                 btn = this.#todo_button_cancel();

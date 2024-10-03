@@ -1,18 +1,24 @@
 "use strict"
 
 function e_first_page_load() {
-    const todo = TodoData.get_instance();
-
-    if (todo.is_empty()) {
-        // show splash!
-        RenderAppSplash.get_instance().init();
-        return;
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        DEBUG_ENABLE.TODO_DATA = true;
+        // DEBUG_ENABLE.ADD_DUMMY_DATA = true;
     }
+
+    // if (TodoData.get_instance().is_empty()) {
+    //     // show splash!
+    //     RenderAppSplash.get_instance().init();
+    //     return;
+    // }
 
     // init page
     RenderAppSplash.get_instance().remove();
     RenderAppOptions.get_instance().init();
     RenderTodoEntries.get_instance().all_entries();
+
+    debug_add_dummy_data();
+    debug_todo_data('e_first_page_load');
 }
 
 function e_splash_start(e) {
@@ -21,6 +27,8 @@ function e_splash_start(e) {
     RenderAppSplash.get_instance().remove();
     RenderAppOptions.get_instance().init();
     RenderTodoEntries.get_instance().all_entries();
+
+    debug_todo_data('e_splash_start');
 }
 
 function e_toggle_show_app_options(e) {
@@ -34,6 +42,8 @@ function e_toggle_show_app_options(e) {
         options.remove_page_options();
     }
     options.button_hmburger_highlight(options.show_app_options);
+
+    debug_todo_data('e_toggle_show_app_options');
 }
 
 function e_todo_new(e) {
@@ -43,12 +53,16 @@ function e_todo_new(e) {
     const entry = todo.new_entry();
 
     RenderTodoEntries.get_instance().show_entry(entry);
+
+    debug_todo_data('e_todo_new');
 }
 
 function e_download(e) {
     if (e.button !== 0) return;
 
     console.log('download');
+
+    debug_todo_data('e_download');
 }
 
 function e_todo_entry_edit(entry, e) {
@@ -57,6 +71,9 @@ function e_todo_entry_edit(entry, e) {
     entry.state.set(TODO_STATES.EDITING);
 
     RenderTodoEntries.get_instance().show_entry(entry);
+    TodoData.get_instance().save_entry(entry);
+
+    debug_todo_data('e_todo_entry_edit');
 }
 
 function e_todo_entry_check(entry, e) {
@@ -69,18 +86,19 @@ function e_todo_entry_check(entry, e) {
     }
 
     RenderTodoEntries.get_instance().show_entry(entry);
-    TodoData.get_instance().update_entry(entry);
+    TodoData.get_instance().save_entry(entry);
+
+    debug_todo_data('e_todo_entry_check');
 }
 
-function e_todo_entry_save(entry, e) {
+function e_todo_entry_save(entry, text_filed_id, e) {
     if (e.button !== 0) return;
 
     entry.state.set(TODO_STATES.UNCHECKED);
 
-    const edit_id = 'edit'.concat(entry.id);
-    const edit_field = document.getElementById(edit_id);
+    const edit_field = document.getElementById(text_filed_id);
     if (!edit_field) {
-        throw new Error(`could not find element by id '${edit_id}'`);
+        throw new Error(`could not find text_filed_id '${text_filed_id}'`);
     }
 
     const render = RenderTodoEntries.get_instance();
@@ -89,34 +107,39 @@ function e_todo_entry_save(entry, e) {
 
     if (entry.text.length === 0) {
         render.remove_entry(entry);
-        TodoData.get_instance().delete_entry(entry);
+        TodoData.get_instance().delete_entry(entry.id);
     } else {
         render.show_entry(entry);
         TodoData.get_instance().save_entry(entry);
     }
+
+    debug_todo_data('e_todo_entry_save');
 }
 
 function e_todo_entry_cancel(entry, e) {
     if (e.button !== 0) return;
 
-     // remove last added state making the previous state now the current one
-
     const render = RenderTodoEntries.get_instance();
 
     if (entry.text.length === 0) {
         render.remove_entry(entry);
-        TodoData.get_instance().delete_entry(entry);
+        TodoData.get_instance().delete_entry(entry.id);
     } else {
         entry.state.pop();
         render.show_entry(entry);
+        TodoData.get_instance().save_entry(entry);
     }
+
+    debug_todo_data('e_todo_entry_cancel');
 }
 
 function e_todo_entry_delete(entry, e) {
     if (e.button !== 0) return;
 
-    TodoData.get_instance().delete_entry(entry);
     RenderTodoEntries.get_instance().remove_entry(entry);
+    TodoData.get_instance().delete_entry(entry.id);
+
+    debug_todo_data('e_todo_entry_delete');
 }
 
 function e_toggle_show_checked(e) {
@@ -127,35 +150,6 @@ function e_toggle_show_checked(e) {
     render_todo.all_entries();
 
     RenderAppOptions.get_instance().button_show_checked_highlight(render_todo.show_checked);
-}
 
-function e_add_dummy_data() {
-    let todo = TodoData.get_instance();
-
-    let breakfast = todo.new_entry();
-    breakfast.text = 'Eat breakfast';
-    breakfast.state.set(TODO_STATES.CHECKED);
-    breakfast.state.set(TODO_STATES.EDITING);
-
-    let dinner = todo.new_entry();
-    dinner.text = 'Make dinner';
-    dinner.state.set(TODO_STATES.CHECKED);
-
-    let bathroom = todo.new_entry();
-    bathroom.text = 'Clean bathroom';
-    bathroom.state.set(TODO_STATES.UNCHECKED);
-
-    let bob = todo.new_entry();
-    bob.text = 'Call Bob';
-    bob.state.set(TODO_STATES.CHECKED);
-
-    let j = todo.to_json();
-    todo.data = {};
-    todo.from_json(j);
-
-    // todo.sort(true);
-
-    let render = RenderTodoEntries.get_instance();
-    // render.show_checked = true;
-    render.all_entries();
+    debug_todo_data('e_toggle_show_checked');
 }

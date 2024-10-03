@@ -4,16 +4,25 @@ class _TodoData {
     constructor() {
         const json = localStorage.getItem('data');
         if (json === null) {
-            this.#data = {};
-            this.#data.new_id = 0;
-            this.#data.entries = new Array();
+            this.reset();
         } else {
             this.load_from_json(json);
+        }
+
+        if (this.is_empty()) {
+            this.reset();
         }
     }
 
     #update_local_store() {
         localStorage.setItem('data', JSON.stringify(this.#data));
+    }
+
+    reset() {
+        this.#data = {};
+        this.#data.new_id = 0;
+        this.#data.entries = new Array();
+        this.#update_local_store();
     }
 
     sort(reverse) {
@@ -25,7 +34,6 @@ class _TodoData {
         return this.#data.entries;
     }
 
-    // entry: TodoEntry;
     new_entry() {
         return {
             id:    this.#data.new_id,
@@ -45,30 +53,26 @@ class _TodoData {
         return entry[0];
     }
 
-    update_entry(entry) {
-        for (let e of this.#data.entries) {
-            if (e.i === entry.id) {
-                e.state = entry.state;
-                e.text = entry.text;
-            }
+    save_entry(entry) {
+        let index = this.#data.entries.indexOf(entry);
+        if (index !== -1) {
+            // existing entries are edited in events.js, so this block can be omitted.
+            // I will leave it here just for clarity as it..
+            this.#data.entries[index] = entry; // this does not affect the program..
+        } else {
+            this.#data.entries.push(entry);
+            this.#data.new_id += 1;
         }
 
+        // always keep local storage in sync with in memory data..
         this.#update_local_store();
     }
 
-    save_entry(entry) {
-        this.#data.entries.push(entry);
-        this.#data.new_id += 1;
-        this.#update_local_store();
-    }
-
-    delete_entry(entry) {
-        this.#data.entries.splice(
-            this.#data.entries.findIndex((kv) => kv.id === entry.id),
-            1,
-        );
+    delete_entry(id) {
+        this.#data.entries = this.#data.entries.filter((entry) => entry.id !== id)
 
         this.#update_local_store();
+
         if (this.is_empty()) {
             localStorage.removeItem('data');
         }
@@ -78,12 +82,10 @@ class _TodoData {
         return this.#data.entries.length === 0;
     }
 
-    // download
-    to_json() {
+    save_to_json() {
         return JSON.stringify(this.#data);
     }
 
-    // upload
     load_from_json(json) {
         const data = JSON.parse(json);
         for (const entry of data.entries) {
@@ -91,7 +93,9 @@ class _TodoData {
             states.load_saved_states(entry.state.states);
             entry.state = states;
         }
+
         this.#data = data;
+        this.#update_local_store();
     }
 }
 
