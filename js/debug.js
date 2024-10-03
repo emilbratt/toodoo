@@ -3,7 +3,35 @@
 const DEBUG_ENABLE = {
     TODO_DATA: false,
     ADD_DUMMY_DATA: false,
+    SHOW_HAMBURGER_MENU: false,
+    SHOW_CHECKED: false,
+    RESET_LOCAL_STORAGE: false,
 };
+
+function debug_enable_hamburger_menu() {
+    if (!DEBUG_ENABLE.SHOW_HAMBURGER_MENU) return;
+
+    RenderAppOptions.get_instance().show_hamburger_menu_buttons;
+    RenderAppOptions.get_instance().show_hamburger_menu();
+}
+
+function debug_enable_show_checked() {
+    if (!DEBUG_ENABLE.SHOW_CHECKED) return;
+
+    const render_todo = RenderTodoEntries.get_instance();
+    render_todo.show_checked = true;
+    render_todo.all_entries();
+
+    RenderAppOptions.get_instance().btn_show_checked_toggle_highlight(true);
+
+    debug_todo_data('e_toggle_show_checked');
+}
+
+function debug_reset_local_storage() {
+    if (!DEBUG_ENABLE.RESET_LOCAL_STORAGE) return;
+
+    localStorage.removeItem('data');
+}
 
 function debug_todo_data(caller) {
     if (!DEBUG_ENABLE.TODO_DATA) return;
@@ -31,14 +59,17 @@ function debug_todo_data(caller) {
         let mem_entry = todo.entries()[i];
         let s_mem_entry = JSON.stringify(mem_entry);
 
-        // console.log('local', local_entry);
-        // console.log('mem', mem_entry);
-
         console.assert(
             (s_local_entry === s_mem_entry),
             '\ns_local_entry', s_local_entry,
             '\ns_mem_entry', s_mem_entry,
         );
+
+        // console.log(mem_entry.state.state_name());
+        // console.log('local', local_entry);
+        // console.log('mem', mem_entry);
+
+        // console.log();
     }
 }
 
@@ -71,7 +102,6 @@ function debug_add_dummy_data() {
     todo.save_entry(bob);
 
     let j = todo.save_to_json();
-    todo.data = {};
     todo.load_from_json(j);
 
     // todo.sort(true);

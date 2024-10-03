@@ -4,8 +4,12 @@ function e_first_page_load() {
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
         DEBUG_ENABLE.TODO_DATA = true;
         // DEBUG_ENABLE.ADD_DUMMY_DATA = true;
+        DEBUG_ENABLE.SHOW_HAMBURGER_MENU = true;
+        DEBUG_ENABLE.SHOW_CHECKED = true;
+        DEBUG_ENABLE.RESET_LOCAL_STORAGE = false;
     }
 
+    // // splash screen
     // if (TodoData.get_instance().is_empty()) {
     //     // show splash!
     //     RenderAppSplash.get_instance().init();
@@ -18,6 +22,8 @@ function e_first_page_load() {
     RenderTodoEntries.get_instance().all_entries();
 
     debug_add_dummy_data();
+    debug_enable_hamburger_menu();
+    debug_enable_show_checked();
     debug_todo_data('e_first_page_load');
 }
 
@@ -31,19 +37,17 @@ function e_splash_start(e) {
     debug_todo_data('e_splash_start');
 }
 
-function e_toggle_show_app_options(e) {
+function e_toggle_hamburger_menu(e) {
     if (e.button !== 0) return;
 
-    const options = RenderAppOptions.get_instance()
-    options.show_app_options = !options.show_app_options;
-    if (options.show_app_options) {
-        options.show_page_options();
+    const options = RenderAppOptions.get_instance();
+    if (options.row_hamburger_menu_visible) {
+        options.remove_hamburger_menu();
     } else {
-        options.remove_page_options();
+        options.show_hamburger_menu();
     }
-    options.button_hmburger_highlight(options.show_app_options);
 
-    debug_todo_data('e_toggle_show_app_options');
+    debug_todo_data('e_toggle_hamburger_menu');
 }
 
 function e_todo_new(e) {
@@ -57,14 +61,6 @@ function e_todo_new(e) {
     debug_todo_data('e_todo_new');
 }
 
-function e_download(e) {
-    if (e.button !== 0) return;
-
-    console.log('download');
-
-    debug_todo_data('e_download');
-}
-
 function e_todo_entry_edit(entry, e) {
     if (e.button !== 0) return;
 
@@ -76,7 +72,7 @@ function e_todo_entry_edit(entry, e) {
     debug_todo_data('e_todo_entry_edit');
 }
 
-function e_todo_entry_check(entry, e) {
+function e_todo_toggle_check(entry, e) {
     if (e.button !== 0) return;
 
     if (!entry.state.is(TODO_STATES.CHECKED)) {
@@ -88,7 +84,7 @@ function e_todo_entry_check(entry, e) {
     RenderTodoEntries.get_instance().show_entry(entry);
     TodoData.get_instance().save_entry(entry);
 
-    debug_todo_data('e_todo_entry_check');
+    debug_todo_data('e_todo_toggle_check');
 }
 
 function e_todo_entry_save(entry, text_filed_id, e) {
@@ -107,7 +103,7 @@ function e_todo_entry_save(entry, text_filed_id, e) {
 
     if (entry.text.length === 0) {
         render.remove_entry(entry);
-        TodoData.get_instance().delete_entry(entry.id);
+        TodoData.get_instance().delete_by_id(entry.id);
     } else {
         render.show_entry(entry);
         TodoData.get_instance().save_entry(entry);
@@ -123,7 +119,7 @@ function e_todo_entry_cancel(entry, e) {
 
     if (entry.text.length === 0) {
         render.remove_entry(entry);
-        TodoData.get_instance().delete_entry(entry.id);
+        TodoData.get_instance().delete_by_id(entry.id);
     } else {
         entry.state.pop();
         render.show_entry(entry);
@@ -137,7 +133,7 @@ function e_todo_entry_delete(entry, e) {
     if (e.button !== 0) return;
 
     RenderTodoEntries.get_instance().remove_entry(entry);
-    TodoData.get_instance().delete_entry(entry.id);
+    TodoData.get_instance().delete_by_id(entry.id);
 
     debug_todo_data('e_todo_entry_delete');
 }
@@ -149,7 +145,71 @@ function e_toggle_show_checked(e) {
     render_todo.show_checked = !render_todo.show_checked;
     render_todo.all_entries();
 
-    RenderAppOptions.get_instance().button_show_checked_highlight(render_todo.show_checked);
+    RenderAppOptions.get_instance().btn_show_checked_toggle_highlight(render_todo.show_checked);
 
     debug_todo_data('e_toggle_show_checked');
+}
+
+function e_delete_checked(e) {
+    if (e.button !== 0) return;
+
+    const todo = TodoData.get_instance();
+
+    for (const entry of todo.entries()) {
+        if (entry.state.is(TODO_STATES.CHECKED)) {
+            todo.delete_by_id(entry.id);
+            RenderTodoEntries.get_instance().remove_entry(entry);
+        }
+    }
+
+    debug_todo_data('e_delete_checked');
+}
+
+function e_download_data(e) {
+    if (e.button !== 0) return;
+
+    const data = TodoData.get_instance().save_to_json();
+
+    const a = document.createElement('a');
+    a.setAttribute('href', 'data:application/json; charset=utf-8,' + encodeURIComponent(data));
+    a.setAttribute('download', 'data.toodoo.'.concat(window.location.hostname).concat('.json'));
+    a.click();
+    a.remove();
+
+    debug_todo_data('e_download_data');
+}
+
+function e_upload_data(e) {
+    if (e.button !== 0) return;
+
+    const input_type_file = document.getElementById("ugly-button-upload");
+
+    if (input_type_file) {
+        input_type_file.click();
+    }
+
+    debug_todo_data('e_upload_data');
+}
+
+function e_handle_upload(e) {
+    debug_todo_data('e_handle_upload');
+
+    try {
+        if (e.target.files.length === 0) {
+            alert('No file selected!');
+            return;
+        }
+
+        const reader = new FileReader();
+
+        const file = e.target.files[0];
+        reader.readAsText(file);
+
+        reader.onload = (text) => {
+            TodoData.get_instance().load_from_json(text.target.result);
+            RenderTodoEntries.get_instance().all_entries();
+        };
+    } catch (err) {
+        console.error(err);
+    }
 }

@@ -1,3 +1,8 @@
+// About preserving data.
+// For now, we are using 'localStorage' from the 'Web Storage API'.
+// I might experiement with the 'IndexedDB API' in the future, or in another project..
+// https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
+
 class _TodoData {
     #data = {};
 
@@ -19,9 +24,12 @@ class _TodoData {
     }
 
     reset() {
+        localStorage.removeItem('data');
+
         this.#data = {};
         this.#data.new_id = 0;
         this.#data.entries = new Array();
+
         this.#update_local_store();
     }
 
@@ -68,13 +76,23 @@ class _TodoData {
         this.#update_local_store();
     }
 
-    delete_entry(id) {
+    delete_by_id(id) {
         this.#data.entries = this.#data.entries.filter((entry) => entry.id !== id)
 
         this.#update_local_store();
 
         if (this.is_empty()) {
-            localStorage.removeItem('data');
+            this.reset();
+        }
+    }
+
+    delete_by_state(state) {
+        this.#data.entries = this.#data.entries.filter((entry) => entry.state.get() !== state);
+
+        this.#update_local_store();
+
+        if (this.is_empty()) {
+            this.reset();
         }
     }
 

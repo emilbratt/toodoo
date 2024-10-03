@@ -3,7 +3,7 @@ const TODO_STATES = {
     CHECKED: 1,
     EDITING: 2,
 };
-Object.seal(TODO_STATES);
+Object.freeze(TODO_STATES);
 
 class TodoStates {
     states = [];
@@ -14,7 +14,7 @@ class TodoStates {
     #add(state) {
         this.states.push({
             value: state,
-            time: new Date(),
+            time: new Date().setMilliseconds(0), // always set 0 milli seconds..
         });
     }
 
@@ -44,9 +44,17 @@ class TodoStates {
 
     class_name() {
         const state = this.get();
-        if (state === TODO_STATES.CHECKED) return 'todo-entry-checked';
         if (state === TODO_STATES.UNCHECKED) return 'todo-entry-unchecked';
+        if (state === TODO_STATES.CHECKED) return 'todo-entry-checked';
         if (state === TODO_STATES.EDITING) return 'todo-entry-edit';
+        throw new Error(`the state code '${state}' is not a valid state`);
+    }
+
+    state_name() {
+        const state = this.get();
+        if (state === TODO_STATES.UNCHECKED) return 'UNCHECKED';
+        if (state === TODO_STATES.CHECKED) return 'CHECKED';
+        if (state === TODO_STATES.EDITING) return 'EDITING';
         throw new Error(`the state code '${state}' is not a valid state`);
     }
 

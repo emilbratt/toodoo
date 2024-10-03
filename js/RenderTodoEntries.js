@@ -117,7 +117,7 @@ class _RenderTodoEntries {
                 row.appendChild(text_field);
 
                 btn = this.#todo_button_check(entry.state.is(TODO_STATES.CHECKED));
-                btn.addEventListener("mousedown", (e) => e_todo_entry_check(entry, e));
+                btn.addEventListener("mousedown", (e) => e_todo_toggle_check(entry, e));
                 row.appendChild(btn);
                 break;
 
@@ -135,7 +135,7 @@ class _RenderTodoEntries {
                 row.appendChild(btn);
 
                 btn = this.#todo_button_delete();
-                btn.addEventListener("mousedown", (e) => e_todo_entry_delete(entry, e));
+                btn.addEventListener("click", (e) => e_todo_entry_delete(entry, e));
                 row.appendChild(btn);
                 break;
 

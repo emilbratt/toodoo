@@ -10,9 +10,6 @@ p {
     margin-bottom: auto;
     box-sizing: border-box;
     padding: 0.5rem;
-    /* white-space: normal; */
-    /* margin-right: auto; */
-    /* min-width: 3rem; */
 }
 
 button {
@@ -43,7 +40,8 @@ textarea {
     color: inherit;
 }
 
-
+.button-upload,
+.button-download,
 .button-new-todo,
 .button-save,
 .button-edit,
@@ -59,9 +57,10 @@ textarea {
 
 .button-cancel,
 .button-uncheck {
-    background-color: rgb(255, 240, 203);
+    background-color: rgb(255, 230, 203);
 }
 
+.button-delete-checked,
 .button-delete {
     background-color: rgb(244, 172, 136);
 }
@@ -102,7 +101,7 @@ textarea {
 #app-options > .todo-options > div {
     margin: 0.5rem 0.5rem;
 }
-#app-options > .page-options > div:first-child,
+/* #app-options > .page-options > div:first-child, */
 #app-options > .todo-options > div:first-child {
     margin-right: auto;
 }
