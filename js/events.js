@@ -3,38 +3,20 @@
 function e_first_page_load() {
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
         DEBUG_ENABLE.TODO_DATA = true;
-        // DEBUG_ENABLE.ADD_DUMMY_DATA = true;
+        DEBUG_ENABLE.ADD_DUMMY_DATA = false;
         DEBUG_ENABLE.SHOW_HAMBURGER_MENU = true;
         DEBUG_ENABLE.SHOW_CHECKED = true;
         DEBUG_ENABLE.RESET_LOCAL_STORAGE = false;
     }
 
-    // // splash screen
-    // if (TodoData.get_instance().is_empty()) {
-    //     // show splash!
-    //     RenderAppSplash.get_instance().init();
-    //     return;
-    // }
-
     // init page
-    RenderAppSplash.get_instance().remove();
     RenderAppOptions.get_instance().init();
-    RenderTodoEntries.get_instance().all_entries();
+    RenderTodoEntries.get_instance().init();
 
     debug_add_dummy_data();
     debug_enable_hamburger_menu();
     debug_enable_show_checked();
     debug_todo_data('e_first_page_load');
-}
-
-function e_splash_start(e) {
-    if (e.button !== 0) return;
-
-    RenderAppSplash.get_instance().remove();
-    RenderAppOptions.get_instance().init();
-    RenderTodoEntries.get_instance().all_entries();
-
-    debug_todo_data('e_splash_start');
 }
 
 function e_toggle_hamburger_menu(e) {

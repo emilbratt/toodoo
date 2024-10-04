@@ -2,6 +2,8 @@ body {
     margin: 0rem;
     background-color: rgb(111, 141, 233);
     color: rgb(45, 58, 96);
+    font-size: 1rem;
+    /* font-family: 'Source Sans Pro', monospace; */
 }
 
 p {
@@ -13,6 +15,8 @@ p {
 }
 
 button {
+    color: inherit;
+    font-size: inherit;
     border: none;
     text-align: center;
     text-decoration: none;
@@ -27,42 +31,47 @@ button:hover, button:active {
 }
 
 textarea {
-    background-color: rgb(212, 246, 246);
-    border: solid rgb(207, 226, 226);
-    /* border: none; */
-    height: 3.5rem;
+    background-color: rgb(157, 201, 254);
+    color: inherit;
+    width: 80%;
+    max-width: 30rem;
+    padding: 0.3rem;
+    /* height: 3rem; */
+    border: none;
     resize: vertical;
     box-sizing: border-box;
+    font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
     text-decoration: none;
-    font-family: inherit;
-    color: inherit;
+    text-align: center;
+    scrollbar-width: none;
 }
 
+.button-new-todo,
 .button-upload,
 .button-download,
-.button-new-todo,
 .button-save,
 .button-edit,
 .button-hamburger,
 .button-show-checked {
-    background-color: rgb(183, 255, 254);
+    background-color: rgb(157, 201, 254);
 }
 
 .button-hamburger-off,
 .button-show-checked-off {
     opacity: 0.8;
+    background-color: rgb(152, 183, 209);
 }
 
 .button-cancel,
 .button-uncheck {
-    background-color: rgb(255, 230, 203);
+    background-color: rgb(238, 211, 181);
 }
 
 .button-delete-checked,
 .button-delete {
-    background-color: rgb(244, 172, 136);
+    background-color: rgb(241, 178, 148);
 }
 
 .button-check {
@@ -71,7 +80,6 @@ textarea {
 
 #main-container {
     background-color: rgb(141, 171, 253);
-    font-size: 1.0rem;
     margin-left: auto;
     margin-right: auto;
     max-width: 50rem;
@@ -79,7 +87,6 @@ textarea {
     display: flex;
     flex-direction: column;
     /* flex-direction: row; */
-    /* font-family: 'Source Sans Pro', monospace; */
 }
 #main-container > div {
     margin-bottom: 0.5rem;
@@ -90,24 +97,31 @@ textarea {
     margin-top: 0.5rem;
 }
 
-#app-options > .page-options,
-#app-options > .todo-options {
+#app-options > .todo-options,
+#app-options > .hamburger-options {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background-color: rgb(123, 149, 226);
 }
-#app-options > .page-options > div,
-#app-options > .todo-options > div {
+#app-options > .todo-options {
+    background-color: rgb(131, 158, 236);
+}
+
+#app-options > .hamburger-options {
+    background-color: rgb(120, 145, 221);
+}
+#app-options > .todo-options > div,
+#app-options > .hamburger-options > div {
     margin: 0.5rem 0.5rem;
 }
-/* #app-options > .page-options > div:first-child, */
 #app-options > .todo-options > div:first-child {
     margin-right: auto;
 }
-#app-options > .todo-options > div > button {
-    height: 2.5rem;
-    /* width: 8rem; */
+#app-options > .hamburger-options > div:last-child {
+    margin-left: auto;
+}
+#app-options > .hamburger-options > div > button {
+    width: 10rem;
 }
 
 #todo-entries > .todo-entry-unchecked,
@@ -117,17 +131,17 @@ textarea {
     flex-direction: row;
     gap: 0.5rem;
 }
-#todo-entries>div:nth-child(even) {
-    background-color: rgb(174, 215, 212);
-}
 #todo-entries>div:nth-child(odd) {
-    background-color: rgb(154, 195, 202);
+    background-color: rgb(131, 158, 236);
+}
+#todo-entries>div:nth-child(even) {
+    background-color: rgb(120, 145, 221);
 }
 #todo-entries > .todo-entry-unchecked > div:first-child,
 #todo-entries > .todo-entry-checked > div:first-child {
     width: 100%;
 }
-#todo-entries > .todo-entry-checked > div {
+#todo-entries > .todo-entry-checked > div:first-child {
     text-decoration: line-through;
     opacity: 0.5;
 }
@@ -144,10 +158,4 @@ textarea {
     width: 100%;
     display: flex;
     justify-content: center;
-}
-#todo-entries > .todo-entry-edit > div > textarea {
-    width: 80%;
-    max-width: 30rem;
-    padding: 0.2rem;
-    text-align: center;
 }

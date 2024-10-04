@@ -18,9 +18,7 @@ function debug_enable_hamburger_menu() {
 function debug_enable_show_checked() {
     if (!DEBUG_ENABLE.SHOW_CHECKED) return;
 
-    const render_todo = RenderTodoEntries.get_instance();
-    render_todo.show_checked = true;
-    render_todo.all_entries();
+    const render_todo = RenderTodoEntries.get_instance().show_checked = true;
 
     RenderAppOptions.get_instance().btn_show_checked_toggle_highlight(true);
 

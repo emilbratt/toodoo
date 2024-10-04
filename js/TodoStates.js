@@ -42,14 +42,6 @@ class TodoStates {
         return this.states[this.states.length - 1].value === state;
     }
 
-    class_name() {
-        const state = this.get();
-        if (state === TODO_STATES.UNCHECKED) return 'todo-entry-unchecked';
-        if (state === TODO_STATES.CHECKED) return 'todo-entry-checked';
-        if (state === TODO_STATES.EDITING) return 'todo-entry-edit';
-        throw new Error(`the state code '${state}' is not a valid state`);
-    }
-
     state_name() {
         const state = this.get();
         if (state === TODO_STATES.UNCHECKED) return 'UNCHECKED';

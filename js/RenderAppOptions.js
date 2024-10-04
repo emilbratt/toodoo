@@ -83,7 +83,7 @@ class _RenderAppOptions {
 
     show_hamburger_menu() {
         this.row_hamburger_menu_visible = true;
-        this.#row_hamburger_menu = this.#new_row('page-options', 'page-options');
+        this.#row_hamburger_menu = this.#new_row('hamburger-options', 'hamburger-options');
         this.#row_hamburger_menu.appendChild(this.#into_div(this.#btn_download));
         this.#row_hamburger_menu.appendChild(this.#into_div(this.#btn_upload));
         this.#row_hamburger_menu.appendChild(this.#into_div(this.#btn_delete_checked));

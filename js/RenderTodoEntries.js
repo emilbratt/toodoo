@@ -69,31 +69,40 @@ class _RenderTodoEntries {
         if (row) {
             // reset current todo row
             row.textContent = '';
-        } else {
-            // add new todo row
-            row = document.createElement('div');
-            row.id = entry.id;
-            if (entry.state.is(TODO_STATES.CHECKED)) {
-                // put these on bottom
-                this.#todo_entries.appendChild(row);
-            } else {
-                this.#todo_entries.prepend(row);
-            }
+            return row;
         }
-        row.className = entry.state.class_name();
+
+        // add new todo row
+        row = document.createElement('div');
+        row.id = entry.id;
+        if (entry.state.is(TODO_STATES.CHECKED)) {
+            // put these on bottom
+            this.#todo_entries.appendChild(row);
+        } else {
+            this.#todo_entries.prepend(row);
+        }
 
         return row;
     }
 
+    init() {
+        const todo = TodoData.get_instance();
+        if (todo.entries().length === 0) {
+        }
+        for (const entry of todo.entries()) {
+            this.show_entry(entry);
+        }
+    }
+
     all_entries() {
-        let todo = TodoData.get_instance();
+        const todo = TodoData.get_instance();
         for (const entry of todo.entries()) {
             this.show_entry(entry);
         }
     }
 
     remove_entry(entry) {
-        let el = document.getElementById(entry.id);
+        const el = document.getElementById(entry.id);
         if (el) {
             el.remove();
         }
@@ -105,13 +114,19 @@ class _RenderTodoEntries {
             return;
         }
 
-        let row = this.#get_row(entry);
+        const row = this.#get_row(entry);
 
         let btn;
         let text_field;
         switch (entry.state.get()) {
             case TODO_STATES.CHECKED:
             case TODO_STATES.UNCHECKED:
+                if (entry.state.get() === TODO_STATES.CHECKED) {
+                    row.className = 'todo-entry-checked';
+                } else {
+                    row.className = 'todo-entry-unchecked';
+                }
+
                 text_field = this.#todo_text(entry.text);
                 text_field.addEventListener("mousedown", (e) => e_todo_entry_edit(entry, e));
                 row.appendChild(text_field);
@@ -122,6 +137,7 @@ class _RenderTodoEntries {
                 break;
 
             case TODO_STATES.EDITING:
+                row.className = 'todo-entry-edit';
                 const text_filed_id = 'input'.concat(entry.id);
                 text_field = this.#todo_textarea(entry.text, text_filed_id);
                 row.appendChild(text_field);
