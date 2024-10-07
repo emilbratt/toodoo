@@ -58,7 +58,7 @@ class _RenderAppOptions {
         this.#btn_show_checked.addEventListener("mousedown", (e) => e_toggle_show_checked(e));
         this.#btn_hamburger.addEventListener("mousedown", (e) => e_toggle_hamburger_menu(e));
         this.#btn_download.addEventListener("mousedown", (e) => e_download_data(e));
-        this.#btn_upload.addEventListener("mousedown", (e) => e_upload_data(e));
+        this.#btn_upload.addEventListener("mousedown", (e) => e_upload_data(false, e));
         this.#btn_delete_checked.addEventListener("click", (e) => e_delete_checked(e));
     }
 
@@ -66,10 +66,10 @@ class _RenderAppOptions {
         // https://developer.mozilla.org/en-US/docs/Web/API/File_API/Using_files_from_web_applications#using_hidden_file_input_elements_using_the_click_method
         const ugly = document.createElement('input');
         ugly.style.display = 'none';
-        ugly.id = 'ugly-button-upload';
+        ugly.id = 'ugly-input-upload';
         ugly.accept = 'application/json';
         ugly.type = 'file';
-        ugly.onchange = (e) => e_handle_upload(e);
+        ugly.onchange = (e) => e_upload_data(true, e);
         return ugly;
     }
 
@@ -101,8 +101,8 @@ class _RenderAppOptions {
 
     init() {
         this.#add_event_listeners();
-        this.#app_options.appendChild(this.#row_todo_options);
-        this.#app_options.appendChild(this.#btn_upload_hack());
+        this.#app_options.prepend(this.#row_todo_options);
+        this.#app_options.prepend(this.#btn_upload_hack());
     }
 }
 

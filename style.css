@@ -1,9 +1,9 @@
 body {
     margin: 0rem;
     background-color: rgb(111, 141, 233);
-    color: rgb(45, 58, 96);
-    font-size: 1rem;
-    /* font-family: 'Source Sans Pro', monospace; */
+    color: rgb(0, 13, 52);
+    font-size: 1.1rem;
+    font-family: tahoma, arial, helvetica, sans-serif;
 }
 
 p {
@@ -11,7 +11,12 @@ p {
     margin-top: auto;
     margin-bottom: auto;
     box-sizing: border-box;
-    padding: 0.5rem;
+    padding: 0.6rem;
+}
+p:hover, p:active {
+    color: rgb(49, 65, 114);
+
+    cursor: pointer;
 }
 
 button {
@@ -21,7 +26,7 @@ button {
     text-align: center;
     text-decoration: none;
     box-sizing: border-box;
-    padding: 0rem 0.5rem;
+    padding: 0rem 1rem;
     height: 2.5rem;
     min-width: 4rem;
 }
@@ -51,7 +56,6 @@ textarea {
 .button-new-todo,
 .button-upload,
 .button-download,
-.button-save,
 .button-edit,
 .button-hamburger,
 .button-show-checked {
@@ -74,15 +78,16 @@ textarea {
     background-color: rgb(241, 178, 148);
 }
 
+.button-save,
 .button-check {
-    background-color: rgb(195, 247, 196);
+    background-color: rgb(181, 242, 182);
 }
 
 #main-container {
     background-color: rgb(141, 171, 253);
     margin-left: auto;
     margin-right: auto;
-    max-width: 50rem;
+    max-width: 60rem;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -119,9 +124,6 @@ textarea {
 }
 #app-options > .hamburger-options > div:last-child {
     margin-left: auto;
-}
-#app-options > .hamburger-options > div > button {
-    width: 10rem;
 }
 
 #todo-entries > .todo-entry-unchecked,

@@ -1,21 +1,21 @@
 "use strict"
 
 function e_first_page_load() {
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-        DEBUG_ENABLE.TODO_DATA = true;
-        DEBUG_ENABLE.ADD_DUMMY_DATA = false;
-        DEBUG_ENABLE.SHOW_HAMBURGER_MENU = true;
-        DEBUG_ENABLE.SHOW_CHECKED = true;
-        DEBUG_ENABLE.RESET_LOCAL_STORAGE = false;
+    // enable debug stuff if on local pc..
+    switch (location.hostname) {
+        case "127.0.0.1":
+        case "localhost":
+            DEBUG_ENABLE.TODO_DATA = true;
+
+            debug_add_dummy_data();
+            debug_enable_hamburger_menu();
+            debug_enable_show_checked();
     }
 
     // init page
     RenderAppOptions.get_instance().init();
     RenderTodoEntries.get_instance().init();
 
-    debug_add_dummy_data();
-    debug_enable_hamburger_menu();
-    debug_enable_show_checked();
     debug_todo_data('e_first_page_load');
 }
 
@@ -161,37 +161,33 @@ function e_download_data(e) {
     debug_todo_data('e_download_data');
 }
 
-function e_upload_data(e) {
-    if (e.button !== 0) return;
-
-    const input_type_file = document.getElementById("ugly-button-upload");
-
-    if (input_type_file) {
-        input_type_file.click();
-    }
-
-    debug_todo_data('e_upload_data');
-}
-
-function e_handle_upload(e) {
+function e_upload_data(is_file_input, e) {
     debug_todo_data('e_handle_upload');
 
-    try {
-        if (e.target.files.length === 0) {
-            alert('No file selected!');
-            return;
+    if (!is_file_input) {
+        // The upload button was pressed.
+        // Lets make it press the hidden file input to make it trigger the browsers file upload event.
+        document.getElementById("ugly-input-upload").click();
+    } else {
+        // The hidden file input was pressed.
+        // lets handle the browsers file upload event.
+        try {
+            if (e.target.files.length === 0) {
+                alert('No file selected!');
+                return;
+            }
+
+            const reader = new FileReader();
+
+            const file = e.target.files[0];
+            reader.readAsText(file);
+
+            reader.onload = (text) => {
+                TodoData.get_instance().load_from_json(text.target.result);
+                RenderTodoEntries.get_instance().all_entries();
+            };
+        } catch (err) {
+            console.error(err);
         }
-
-        const reader = new FileReader();
-
-        const file = e.target.files[0];
-        reader.readAsText(file);
-
-        reader.onload = (text) => {
-            TodoData.get_instance().load_from_json(text.target.result);
-            RenderTodoEntries.get_instance().all_entries();
-        };
-    } catch (err) {
-        console.error(err);
     }
 }

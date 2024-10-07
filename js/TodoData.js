@@ -14,13 +14,17 @@ class _TodoData {
             this.load_from_json(json);
         }
 
-        if (this.is_empty()) {
+        if (this.#is_empty()) {
             this.reset();
         }
     }
 
     #update_local_store() {
         localStorage.setItem('data', JSON.stringify(this.#data));
+    }
+
+    #is_empty() {
+        return this.#data.entries.length === 0;
     }
 
     reset() {
@@ -50,19 +54,8 @@ class _TodoData {
         };
     }
 
-    get_entry(id) {
-        const entry = this.#data.entries.filter((entry) => entry.id === id);
-        if (entry.length === 0) {
-            throw new Error(`could not find entry with id '${id}'`);
-        }
-        if (entry.length > 1) {
-            throw new Error(`found possible duplicate entries with id '${id}'`);
-        }
-        return entry[0];
-    }
-
     save_entry(entry) {
-        let index = this.#data.entries.indexOf(entry);
+        const index = this.#data.entries.indexOf(entry);
         if (index !== -1) {
             // existing entries are edited in events.js, so this block can be omitted.
             // I will leave it here just for clarity as it..
@@ -79,25 +72,11 @@ class _TodoData {
     delete_by_id(id) {
         this.#data.entries = this.#data.entries.filter((entry) => entry.id !== id)
 
-        this.#update_local_store();
-
-        if (this.is_empty()) {
+        if (this.#is_empty()) {
             this.reset();
+        } else {
+            this.#update_local_store();
         }
-    }
-
-    delete_by_state(state) {
-        this.#data.entries = this.#data.entries.filter((entry) => entry.state.get() !== state);
-
-        this.#update_local_store();
-
-        if (this.is_empty()) {
-            this.reset();
-        }
-    }
-
-    is_empty() {
-        return this.#data.entries.length === 0;
     }
 
     save_to_json() {

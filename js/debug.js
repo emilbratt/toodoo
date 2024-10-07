@@ -2,33 +2,23 @@
 
 const DEBUG_ENABLE = {
     TODO_DATA: false,
-    ADD_DUMMY_DATA: false,
-    SHOW_HAMBURGER_MENU: false,
-    SHOW_CHECKED: false,
-    RESET_LOCAL_STORAGE: false,
 };
 
 function debug_enable_hamburger_menu() {
-    if (!DEBUG_ENABLE.SHOW_HAMBURGER_MENU) return;
+    console.log('\nDEBUG:', 'debug_enable_hamburger_menu()');
 
-    RenderAppOptions.get_instance().show_hamburger_menu_buttons;
-    RenderAppOptions.get_instance().show_hamburger_menu();
+    const options = RenderAppOptions.get_instance();
+    options.show_hamburger_menu_buttons;
+    options.show_hamburger_menu();
 }
 
 function debug_enable_show_checked() {
-    if (!DEBUG_ENABLE.SHOW_CHECKED) return;
-
-    const render_todo = RenderTodoEntries.get_instance().show_checked = true;
+    console.log('\nDEBUG:', 'debug_enable_show_checked()');
+    RenderTodoEntries.get_instance().show_checked = true;
 
     RenderAppOptions.get_instance().btn_show_checked_toggle_highlight(true);
 
     debug_todo_data('e_toggle_show_checked');
-}
-
-function debug_reset_local_storage() {
-    if (!DEBUG_ENABLE.RESET_LOCAL_STORAGE) return;
-
-    localStorage.removeItem('data');
 }
 
 function debug_todo_data(caller) {
@@ -63,18 +53,16 @@ function debug_todo_data(caller) {
             '\ns_mem_entry', s_mem_entry,
         );
 
-        // console.log(mem_entry.state.state_name());
-        // console.log('local', local_entry);
-        // console.log('mem', mem_entry);
+        console.log(mem_entry.state.state_name());
+        console.log('local', local_entry);
+        console.log('mem', mem_entry);
 
-        // console.log();
+        console.log();
     }
 }
 
 function debug_add_dummy_data() {
-    if (!DEBUG_ENABLE.ADD_DUMMY_DATA) return;
-
-    console.log('\nDEBUG:', 'debug_add_dummy_data')
+    console.log('\nDEBUG:', 'debug_add_dummy_data()');
 
     let todo = TodoData.get_instance();
     todo.reset();

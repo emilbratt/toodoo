@@ -87,14 +87,15 @@ class _RenderTodoEntries {
 
     init() {
         const todo = TodoData.get_instance();
-        if (todo.entries().length === 0) {
-        }
         for (const entry of todo.entries()) {
             this.show_entry(entry);
         }
     }
 
     all_entries() {
+        this.#todo_entries.replaceChildren(); // emptying all current elements..
+        // https://developer.mozilla.org/en-US/docs/Web/API/Element/replaceChildren#emptying_a_node
+
         const todo = TodoData.get_instance();
         for (const entry of todo.entries()) {
             this.show_entry(entry);
